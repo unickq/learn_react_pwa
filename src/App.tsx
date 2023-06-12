@@ -12,7 +12,7 @@ function App() {
   const [pickTwo, setPickTwo] = useState<CardType | null>(null); // Second selection
   const [disabled, setDisabled] = useState(false); // Delay handler
   const [wins, setWins] = useState(0); // Win streak
-
+  const [attempts, setAttempts] = useState(0);
 
   const handleClick = (card: CardType) => {
     if (!disabled) {
@@ -23,6 +23,7 @@ function App() {
   const handleTurn = () => {
     setPickOne(null);
     setPickTwo(null);
+    setAttempts(attempts + 1);
     setDisabled(false);
   }
 
@@ -76,13 +77,14 @@ function App() {
 
   const startNewGame = () => {
     setWins(0);
-    handleTurn()
+    handleTurn();
+    setAttempts(0);
     setCards(shuffle);
   }
 
   return (
     <>
-      <Header startNewGame={startNewGame} wins={wins} />
+      <Header startNewGame={startNewGame} wins={wins} attempts={attempts} />
 
       <div className="grid">
         {cards.map((card) => {
