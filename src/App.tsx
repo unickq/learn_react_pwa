@@ -1,12 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import './App.css';
 import { shuffle } from './utils/shuffle';
-import Card from './components/Card';
+import Card  from './components/Card';
 import { CardType } from './types/CardType';
 import { Header } from './components/Header';
+import { Footer } from './components/Footer';
+import ThemeProvider, { ThemeContext, ThemeContextType } from './context/theme';
 
 
 function App() {
+ 
+
   const [cards, setCards] = useState<CardType[]>(shuffle);
   const [pickOne, setPickOne] = useState<CardType | null>(null); // First selection
   const [pickTwo, setPickTwo] = useState<CardType | null>(null); // Second selection
@@ -82,22 +86,28 @@ function App() {
 
   return (
     <>
-      <Header startNewGame={startNewGame} wins={wins} />
+      <ThemeProvider>
 
-      <div className="grid">
-        {cards.map((card) => {
-          const { image, id, matched } = card;
 
-          return (
-            <Card
-              key={id}
-              image={image}
-              selected={card === pickOne || card === pickTwo || matched}
-              onClick={() => handleClick(card)}
-            />
-          );
-        })}
-      </div>
+        <Header startNewGame={startNewGame} wins={wins} />
+
+        <div className="grid">
+          {cards.map((card) => {
+            const { image, id, matched } = card;
+
+            return (
+              <Card
+                key={id}
+                image={image}
+                selected={card === pickOne || card === pickTwo || matched}
+                onClick={() => handleClick(card)}
+              />
+            );
+          })}
+        </div>
+
+        <Footer/>
+      </ThemeProvider>
     </>
   );
 }
