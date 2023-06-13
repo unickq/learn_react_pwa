@@ -59,7 +59,7 @@ function App() {
     return () => {
       clearTimeout(pickTimer);
     };
-  }, [cards, pickOne, pickTwo]);
+  }, [cards, handleTurn, pickOne, pickTwo]);
 
   // If player has found all matches, handle accordingly
   useEffect(() => {
@@ -73,7 +73,7 @@ function App() {
       handleTurn();
       setCards(shuffle);
     }
-  }, [cards, wins]);
+  }, [cards, handleTurn, wins]);
 
   const startNewGame = () => {
     setWins(0);
