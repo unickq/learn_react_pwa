@@ -71,6 +71,7 @@ function App() {
       console.log('You win!');
       setWins(wins + 1);
       handleTurn();
+      setAttempts(0);
       setCards(shuffle);
     }
   }, [cards, handleTurn, wins]);
