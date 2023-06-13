@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import { shuffle } from './utils/shuffle';
 import Card from './components/Card';
 import { CardType } from './types/CardType';
 import { Header } from './components/Header';
+import useAppBadge from './hooks/useAppBadge';
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
   const [disabled, setDisabled] = useState(false); // Delay handler
   const [wins, setWins] = useState(0); // Win streak
   const [attempts, setAttempts] = useState(0);
+  const [setBadge, clearBadge] = useAppBadge(); // Badge counter
 
   const handleClick = (card: CardType) => {
     if (!disabled) {
@@ -20,12 +22,12 @@ function App() {
     }
   }
 
-  const handleTurn = () => {
+  const handleTurn = useCallback(() => {
     setPickOne(null);
     setPickTwo(null);
     setAttempts(attempts + 1);
     setDisabled(false);
-  }
+  }, [attempts]);
 
   // Used for selection and match handling
   useEffect(() => {
@@ -71,12 +73,14 @@ function App() {
       console.log('You win!');
       setWins(wins + 1);
       handleTurn();
+      setBadge();
       setAttempts(0);
       setCards(shuffle);
     }
   }, [cards, handleTurn, wins]);
 
   const startNewGame = () => {
+    clearBadge()
     setWins(0);
     handleTurn();
     setAttempts(0);
